@@ -1,0 +1,14 @@
+{
+  "name": "boggle",
+  "version": "0.0.0",
+  "description": "boggle!",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "saw",
+  "license": "ISC",
+  "dependencies":{
+  	
+  }
+}
