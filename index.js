@@ -2,6 +2,8 @@ var fs = require('fs');
 
 var dict, dictArr, trie = {}, words = [];
 
+var thisWord = '', root;
+
 function checkNode(root, word, ind) {
 
 	if(!word[ind]) {
@@ -59,53 +61,57 @@ function buildBoggle(size) {
 
 }
 
-var count =0;
+function boggleIt(boggle, index, word, root) {
+	// console.log(index);
+	console.log('word', word);
 
-function boggleIt(boggle, index) {
-	count++;
-	var word = '';
-	var letter;
+	var v = index[0], h = index[1], thisBoggle;
 
-	var startLetter = boggle[index[0]][index[1]];
-
-	var root = trie;
-	for(var i = 0; i < boggle[index[0]].length; i++) {
+	if(boggle[v] && boggle[v][h]) {
+		thisBoggle = boggle[v][h];
+		console.log(boggle[v][h]);
+	} else {
+		return;
+	}
+	
+	if(root[thisBoggle]) {
+		word += thisBoggle;
 		
-		letter = boggle[index[0]][index[1] +i];
-		
-		if(root[letter]) {
-			word += letter;
-			
-			if(root[letter].$ && (word.length > 1 || word === 'A' || word === 'I')) {
-				// console.log(word);
-				words.push(word);
-			} 
-
-			root = root[letter];
-		} else {
-			return;
+		if(root[thisBoggle].$ && word.length > 3) {
+			words.push(word);
 		}
+		boggleIt(boggle, [v - 1, h], word, root[thisBoggle]);
+		boggleIt(boggle, [v + 1, h], word, root[thisBoggle]);
+		boggleIt(boggle, [v, h +1], word, root[thisBoggle]);
+		boggleIt(boggle, [v, h -1], word, root[thisBoggle]);
 	}
 
 }
 
 
 
-fs.readFile('dict.txt', {encoding:'utf8'}, function (err, data) {
+
+
+fs.readFile('f2-33.txt', {encoding:'utf8'}, function (err, data) {
 	var boggle;
 	var letter, currentRoot, currentWord;
 	if (err) throw err;
-	dict = data;
+	dict = data ;
 	dictArr = dict.split(/\n/);
 	buildTrie(dictArr);
-	boggle = buildBoggle(4);
+	// boggle = buildBoggle(4);
+	boggle = [
+		['H', 'E', 'A', 'T'],
+		['A','B','C','D'],
+		['X','S','E','U'],
+		['A','C', 'V','E']
+	];
 	console.log(boggle);
 	// console.log(boggle);
 	for (var i = 0; i < boggle.length; i++) {
 		// console.log(i);
 		for (var j = 0; j < boggle[i].length; j++) {
-			// console.log(j);
-			boggleIt(boggle, [i,j]);
+			boggleIt(boggle, [i,j], '', trie);
 		}
 	}
 
