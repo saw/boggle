@@ -83,6 +83,8 @@ function boggleIt(boggle, index, word, root, used) {
 		if(root[thisBoggle].$ && word.length >= 3) {
 			words.push(word);
 		}
+
+		//I admit this is a hacky way to track visited squares, but it works;
 		boggleIt(boggle, [v - 1, h], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
 		boggleIt(boggle, [v + 1, h], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
 		boggleIt(boggle, [v, h +1], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
