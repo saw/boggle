@@ -80,7 +80,7 @@ function boggleIt(boggle, index, word, root, used) {
 		word += thisBoggle;
 		used[''+v+h] = true;
 		
-		if(root[thisBoggle].$ && word.length >= 3) {
+		if(root[thisBoggle].$ && word.length >= 4) {
 			words.push(word);
 		}
 
@@ -117,6 +117,10 @@ fs.readFile('f2-33.txt', {encoding:'utf8'}, function (err, data) {
 		}
 	}
 	console.timeEnd('solve');
+	if(words.length < 1) {
+		console.log('NO WORDS AT ALL');
+	}
 
-	console.log(words);
+	console.log(words.join(', ').toLowerCase());
+
 });
