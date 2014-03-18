@@ -80,7 +80,7 @@ function boggleIt(boggle, index, word, root, used) {
 		word += thisBoggle;
 		used[''+v+h] = true;
 		
-		if(root[thisBoggle].$ && word.length >= 4) {
+		if(root[thisBoggle].$ && word.length >= 4 && words.indexOf(word) === -1) {
 			words.push(word);
 		}
 
