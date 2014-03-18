@@ -61,29 +61,32 @@ function buildBoggle(size) {
 
 }
 
-function boggleIt(boggle, index, word, root) {
+function boggleIt(boggle, index, word, root, used) {
 	// console.log(index);
-	console.log('word', word);
+	
 
 	var v = index[0], h = index[1], thisBoggle;
+	if(used[''+v+h]) {
+		return;
+	} 
 
 	if(boggle[v] && boggle[v][h]) {
 		thisBoggle = boggle[v][h];
-		console.log(boggle[v][h]);
 	} else {
 		return;
 	}
 	
 	if(root[thisBoggle]) {
 		word += thisBoggle;
+		used[''+v+h] = true;
 		
-		if(root[thisBoggle].$ && word.length > 3) {
+		if(root[thisBoggle].$ && word.length >= 3) {
 			words.push(word);
 		}
-		boggleIt(boggle, [v - 1, h], word, root[thisBoggle]);
-		boggleIt(boggle, [v + 1, h], word, root[thisBoggle]);
-		boggleIt(boggle, [v, h +1], word, root[thisBoggle]);
-		boggleIt(boggle, [v, h -1], word, root[thisBoggle]);
+		boggleIt(boggle, [v - 1, h], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
+		boggleIt(boggle, [v + 1, h], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
+		boggleIt(boggle, [v, h +1], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
+		boggleIt(boggle, [v, h -1], word, root[thisBoggle], JSON.parse(JSON.stringify(used)));
 	}
 
 }
@@ -99,21 +102,19 @@ fs.readFile('f2-33.txt', {encoding:'utf8'}, function (err, data) {
 	dict = data ;
 	dictArr = dict.split(/\n/);
 	buildTrie(dictArr);
-	// boggle = buildBoggle(4);
-	boggle = [
-		['H', 'E', 'A', 'T'],
-		['A','B','C','D'],
-		['X','S','E','U'],
-		['A','C', 'V','E']
-	];
-	console.log(boggle);
-	// console.log(boggle);
+	boggle = buildBoggle(4);
+
+	for (var n = 0; n < boggle.length; n++) {
+		console.log(boggle[n].join('  '));
+	}
+	
+	console.time('solve');
 	for (var i = 0; i < boggle.length; i++) {
-		// console.log(i);
 		for (var j = 0; j < boggle[i].length; j++) {
-			boggleIt(boggle, [i,j], '', trie);
+			boggleIt(boggle, [i,j], '', trie, {});
 		}
 	}
+	console.timeEnd('solve');
 
 	console.log(words);
 });
