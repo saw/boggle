@@ -97,7 +97,7 @@ function boggleIt(boggle, index, word, root, used) {
 
 
 
-fs.readFile('f2-33.txt', {encoding:'utf8'}, function (err, data) {
+fs.readFile('dict.txt', {encoding:'utf8'}, function (err, data) {
 	var boggle;
 	var letter, currentRoot, currentWord;
 	if (err) throw err;
